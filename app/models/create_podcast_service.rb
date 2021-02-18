@@ -1,7 +1,6 @@
 require 'httparty'
 
 class CreatePodcastService
-  # URL = "https://theaussieenglishpodcast.podigee.io/feed/mp3"
   def initialize(url)
     @url = url
   end
@@ -14,12 +13,10 @@ class CreatePodcastService
     @title = feed.title
     @description = feed.description
     @publication_date = feed.last_built.to_date
-    @image_url = feed.image.url
-    @website_url = feed.url
-    @feed_url = feed.url
-  end
+    @image_url = feed.image.url.downcase
+    @website_url = feed.url.downcase
+    @feed_url = feed.url.downcase
 
-  def create_podcast
     Podcast.create!(
       title: @title,
       description: @description,
@@ -30,3 +27,7 @@ class CreatePodcastService
     )
   end
 end
+
+# URL = "https://theaussieenglishpodcast.podigee.io/feed/mp3"
+# podcast = CreatePodcastService.new(URL)
+# podcast.parse_xml(URL)

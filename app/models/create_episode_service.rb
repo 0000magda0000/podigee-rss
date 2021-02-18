@@ -17,16 +17,29 @@ class CreateEpisodeService
       @description = entry.summary
       @audio_duration = entry.itunes_duration
       @audio_file_url = entry.url
-      @podcast_id = Podcast.where("website_url like ?", "%#{@audio_file_url}%").first.id
+      if Podcast.where("website_url LIKE ?", "%#{@audio_file_url}%").first.nil?
+        @podcast_id = Podcast.first.id
+      else
+        @podcast_id = Podcast.where("website_url LIKE ?", "%#{@audio_file_url}%").first.id unless nil?
+      end
 
-      Episode.create!(
+      @episodes_array = []
+      @episodes_array << Episode.new(
         title: @title,
         number: @number,
         description: @description,
         audio_duration: @audio_duration,
-        audio_file_url: @audio_file_url,
+        audio_file_url: @audio_file_url.downcase,
         podcast_id: @podcast_id
       )
+
+      @episodes_array.each do |episode|
+        episode.save!
+      end
     end
   end
 end
+
+# URL = "https://theaussieenglishpodcast.podigee.io/feed/mp3"
+# episode = CreateEpisodeService.new(URL)
+# episode.parse_xml(URL)
