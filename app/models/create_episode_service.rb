@@ -20,7 +20,7 @@ class CreateEpisodeService
       if Podcast.where("website_url LIKE ?", "%#{@audio_file_url}%").first.nil?
         @podcast_id = Podcast.first.id
       else
-        @podcast_id = Podcast.where("website_url LIKE ?", "%#{@audio_file_url}%").first.id unless nil?
+        @podcast_id = Podcast.where("website_url LIKE ?", "%#{@audio_file_url}%").first.id
       end
 
       @episodes_array = []
