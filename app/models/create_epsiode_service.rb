@@ -1,7 +1,7 @@
 require 'httparty'
 
 class CreateEpisode
-attr_accessor :title, :number, :description, :audio_duration, :image_url, :audio_file_url
+  attr_accessor :title, :number, :description, :audio_duration, :image_url, :audio_file_url
 
   def initialize(title)
     @title = title
@@ -15,13 +15,14 @@ attr_accessor :title, :number, :description, :audio_duration, :image_url, :audio
   def self.parse_xml(url)
     xml = HTTParty.get(url).body
     feed = Feedjira.parse(xml)
+    # what comes after entries or after feed? check parsed xml
     feed.entries.each do |entry|
       @title = entry.title
       @number = entry
-      @description =
-      @audio_duration =
+      @description = entry.summary
+      @audio_duration = entry.duration
       @image_url =
-      @audio_file_url =
+      @audio_file_url = entry.url
     end
   end
 
