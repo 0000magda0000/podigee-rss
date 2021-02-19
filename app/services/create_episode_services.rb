@@ -1,6 +1,6 @@
 require 'httparty'
 
-class CreateEpisodeService
+class CreateEpisodeServices
 
   def initialize(url)
     @url = url
